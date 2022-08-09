@@ -1,8 +1,8 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { Saints } from 'interfaces/Saints'
+import { Saint } from 'interfaces/Saint'
 
 export default class SaintsController {
-  private saints = [
+  private saints: Saint[] = [
     {
       id: 1,
       name: 'Seiya',
@@ -17,18 +17,20 @@ export default class SaintsController {
     },
   ]
 
-  public async getSaints({ params }: HttpContextContract) {
-    let response: Saints[] = []
-    params.id
-      ? (response = this.saints.filter((saint) => saint.id === params.id))
-      : (response = this.saints)
-    return response
+  public getSaints(): Saint[] {
+    return this.saints
   }
 
-  public async registerSaint(data) {
+  public getSaint({ params }: HttpContextContract): Saint[] {
+    const { id } = params
+    return this.saints.filter((saint) => saint.id === id)
+  }
+
+  public registerSaint({ request }: HttpContextContract): Saint {
+    const data = request.body()
     let newSaint = JSON.parse(JSON.stringify(data))
     newSaint.id = this.saints.length + 1
     this.saints.push(newSaint)
-    return this.saints
+    return newSaint
   }
 }

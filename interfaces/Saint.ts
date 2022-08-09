@@ -1,4 +1,4 @@
-export interface Saints {
+export interface Saint {
   id: number
   name: string
   constellation: string

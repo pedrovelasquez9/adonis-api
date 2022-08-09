@@ -19,15 +19,9 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-import SaintsController from './../app/Controllers/Http/SaintsController'
 
-Route.get('/saints/:id?', 'SaintsController.getSaints').where('id', {
-  match: /^[0-9]+$/,
-  cast: (id) => Number(id),
-})
+Route.get('/saint/:id', 'SaintsController.getSaint').where('id', Route.matchers.number())
 
-Route.post('/saints', async ({ request }) => {
-  const saintsController = new SaintsController()
-  const data = request.body()
-  return saintsController.registerSaint(data)
-})
+Route.get('/saints', 'SaintsController.getSaints')
+
+Route.post('/saints', 'SaintsController.registerSaint')
