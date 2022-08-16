@@ -11,7 +11,7 @@ export default class SaintsController {
 
   public async getSaint({ params }: HttpContextContract): Promise<Saint | null> {
     const { id } = params
-    return await Saints.findBy('id', id)
+    return await Saints.findByOrFail('id', id)
   }
 
   public async registerSaint({ request }: HttpContextContract): Promise<Saint> {

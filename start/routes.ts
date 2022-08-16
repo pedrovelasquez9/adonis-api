@@ -24,4 +24,4 @@ Route.get('/saint/:id', 'SaintsController.getSaint').where('id', Route.matchers.
 
 Route.get('/saints', 'SaintsController.getSaints')
 
-Route.post('/saints', 'SaintsController.registerSaint')
+Route.post('/saint', 'SaintsController.registerSaint')
