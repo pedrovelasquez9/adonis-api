@@ -1,12 +1,20 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Orm'
 import Saints from 'App/Models/Saints'
 import { Saint } from 'interfaces/Saint'
+import { buildDynamicSearchQuery } from 'utils/dbQueryHelpers'
+import { PAGE_SIZE } from './../../../utils/constants'
 
 export default class SaintsController {
   private saint = new Saints()
 
-  public async getSaints(): Promise<Saint[]> {
-    return await Saints.all()
+  public async getSaints({ request }): Promise<Saint[]> {
+    const queryString = request.qs()
+    return await Saints.query()
+      .if(queryString, (query: ModelQueryBuilderContract<typeof Saints, Saints>) => {
+        buildDynamicSearchQuery(query, queryString)
+      })
+      .paginate(1, PAGE_SIZE)
   }
 
   public async getSaint({ params }: HttpContextContract): Promise<Saint | null> {
