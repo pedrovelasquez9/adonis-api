@@ -25,3 +25,7 @@ Route.get('/saint/:id', 'SaintsController.getSaint').where('id', Route.matchers.
 Route.get('/saints', 'SaintsController.getSaints')
 
 Route.post('/saint', 'SaintsController.registerSaint')
+
+Route.put('/saint/:id', 'SaintsController.updateSaint').where('id', Route.matchers.number())
+
+Route.delete('/saint/:id', 'SaintsController.deleteSaint').where('id', Route.matchers.number())

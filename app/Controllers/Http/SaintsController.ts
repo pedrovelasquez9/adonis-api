@@ -2,7 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Orm'
 import Saints from 'App/Models/Saints'
 import { Saint } from 'interfaces/Saint'
-import { buildDynamicSearchQuery } from 'utils/dbQueryHelpers'
+import { buildDynamicSearchQuery } from './../../../utils/dbQueryHelpers'
 import { PAGE_SIZE } from './../../../utils/constants'
 
 export default class SaintsController {
@@ -25,5 +25,17 @@ export default class SaintsController {
   public async registerSaint({ request }: HttpContextContract): Promise<Saint> {
     const { name, constellation, range } = request.body()
     return await this.saint.fill({ name, constellation, range }).save()
+  }
+
+  public async updateSaint({ params, request }: HttpContextContract): Promise<Saint | null> {
+    const { id } = params
+    const saintData = request.body()
+    const saint = await Saints.findByOrFail('id', id)
+    return await saint.merge({ ...saintData }).save()
+  }
+
+  public async deleteSaint({ params }: HttpContextContract): Promise<void> {
+    const { id } = params
+    await (await Saints.findOrFail(id)).delete()
   }
 }
